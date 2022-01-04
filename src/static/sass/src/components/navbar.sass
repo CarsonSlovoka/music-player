@@ -1,0 +1,21 @@
+@mixin styles
+  .navbar
+    width: 77%
+    margin: auto
+    padding: .25rem 0 // top, bottom .25rem. left right: 0
+    display: flex
+    justify-content: space-between // 在display: flex才有作用. The justify-content property is a sub-property of the Flexible Box
+    align-items: center // vertical align
+
+    & ul li
+      list-style: none
+      display: inline-block
+      margin: 0 2rem
+
+      & a
+        text-decoration: none // remove underline
+        color: #5f5f5f
+        font-size: 1.1rem
+
+  .logo
+    cursor: pointer
