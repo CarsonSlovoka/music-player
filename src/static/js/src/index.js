@@ -7,6 +7,9 @@
       return
     }
     const [_, extName] = match
+    if (!['mp3', 'mp4', 'm4a'].includes(extName.toLowerCase())) {
+      return
+    }
     const frag = document.createRange().createContextualFragment(
       `<li><img class="audio-icon" alt="play" src="static/img/play.png"><span>${name}</span><audio><source src="${url}" type="audio/${extName}"></audio></li>`
     )
