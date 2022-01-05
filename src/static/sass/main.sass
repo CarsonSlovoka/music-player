@@ -1,13 +1,19 @@
-@use 'src/layout'
+@use 'src/layout/containers'
+@use 'src/layout/grid'
+@use 'src/layout/columns'
 @use 'src/components/navbar'
 @use 'src/helpers/position'
+@use 'src/utilities/spacing'
 @use 'src/content'
 @use 'src/id'
 @use 'src/audio'
 
-@include layout.styles
+@include containers.styles
+@include grid.styles
+@include columns.styles
 @include navbar.styles
 @include position.styles
+@include spacing.styles
 @include content.styles
 @include id.styles
 @include audio.styles

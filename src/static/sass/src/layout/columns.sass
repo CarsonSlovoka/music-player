@@ -1,0 +1,10 @@
+@mixin styles
+  $-levelList: 1 2 3 4 5 6 7 8 9 10 11 12
+  $-unit: 100 / length($-levelList)
+  @each $i in $-levelList
+    .col-#{$i}
+      flex: 0 0 auto
+      width: $-unit * $i * 1%
+
+    .offset-#{$i}
+      margin-left: $-unit * $i * 1%
