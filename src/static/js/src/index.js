@@ -14,7 +14,7 @@
 
   initNavbar.prevScrollPos = window.pageYOffset
 
-  function setSong(mainFrag, url, name, markMsg) {
+  function setSong(mainFrag, url, name, songID) {
     const match = url.match(/.*\.(.*)/)
     if (match === null) { // 可能是資料夾
       return
@@ -24,8 +24,8 @@
       return
     }
     const frag = document.createRange().createContextualFragment(
-      `<li>
-<span class="me-1">${markMsg}</span>
+      `<li id="song-${songID}">
+<span class="me-1">${songID}</span>
 <img class="audio-icon me-1" alt="play" src="static/img/play.svg">
 <img class="audio-icon me-1" alt="stop" src="static/img/stop.svg">
 <span>${name}</span><audio><source src="${url}" type="audio/${extName}"></audio>
@@ -52,6 +52,33 @@
     mainFrag.appendChild(frag)
   }
 
+  function initInputSongNumber() {
+    const inputSongNumber = document.querySelector(`#inputSongNumber`)
+
+    inputSongNumber.onkeyup = (keyboardEvent) => {
+      switch (keyboardEvent.key) {
+        case "Enter": {
+          const songId = inputSongNumber.value
+          inputSongNumber.value = "" // clear
+          const liElem = document.querySelector(`#song-${songId}`)
+          if (liElem === null) {
+            return
+          }
+          const imgRun = liElem.querySelector(`img[alt="play"]`)
+          const imgStop = liElem.querySelector(`img[alt="stop"]`)
+          imgStop.click() // 先停止
+          imgRun.click() // 再開始，就能確保跟重頭開始撥放是一樣的
+        }
+          break
+        case "Escape":
+          document.querySelectorAll(`#song-list ul li img[alt="stop"]`).forEach(imgStop=>{
+            imgStop.click()
+          })
+          break
+      }
+    }
+  }
+
   window.onload = async () => {
 
     initNavbar()
@@ -67,5 +94,7 @@
       setSong(fragUL, MEDIA_PATH + sourceURL.pathname, a.innerText, idx)
     })
     ulElem.append(fragUL)
+
+    initInputSongNumber()
   }
 })()
