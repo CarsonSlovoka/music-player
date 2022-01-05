@@ -23,18 +23,21 @@
       return
     }
     const frag = document.createRange().createContextualFragment(
-      `<li><img class="audio-icon" alt="play" src="static/img/play.png"><span>${name}</span><audio><source src="${url}" type="audio/${extName}"></audio></li>`
+      `<li>
+<img class="audio-icon me-1" alt="play" src="static/img/play.svg">
+<span>${name}</span><audio><source src="${url}" type="audio/${extName}"></audio>
+</li>`
     )
-    const iconElem = frag.querySelector(`img`)
+    const imgRun = frag.querySelector(`img[alt="play"]`)
     const audio = frag.querySelector(`audio`)
-    iconElem.onclick = () => {
+    imgRun.onclick = () => {
       // document.que All audio.stop()
       if (audio.paused) {
         audio.play()
-        iconElem.src = "static/img/pause.png"
+        imgRun.src = "static/img/pause.svg"
       } else {
         audio.pause()
-        iconElem.src = "static/img/play.png"
+        imgRun.src = "static/img/play.svg"
       }
     }
     mainFrag.appendChild(frag)
