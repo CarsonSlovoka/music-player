@@ -13,7 +13,19 @@
     <li><a href="#">HOME</a></li>
     <li><a href="#">ABOUT</a></li>
   </ul><br>
-  <input id="inputSongNumber" aria-label="song number" type="text" placeholder="歌曲編號">
+  <input id="inputSongNumber" aria-label="song number" type="text" placeholder="歌曲編號"><br>
+  <button id="btn-config">Config</button>
+
+  <dialog id="dialog-config" class="at-fade-in">
+    <button class="btn-close"></button>
+    <form>
+      <fieldset id="fieldsetAudio">
+        <legend>Audio</legend>
+      </fieldset>
+      <input type="submit" class="mt-2">
+    </form>
+  </dialog>
+
 </nav>
 
 <section class="row mt-5">

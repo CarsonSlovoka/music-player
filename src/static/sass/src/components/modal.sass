@@ -1,0 +1,7 @@
+@mixin styles
+  dialog::backdrop
+    // background-color: rgba(255, 128, 30, .75)
+    backdrop-filter: blur(1.5em) // 霧化
+
+  dialog.at-fade-in[open] // <dialog class="fade-in">
+      -webkit-animation: at-fade-in 1.0s ease normal

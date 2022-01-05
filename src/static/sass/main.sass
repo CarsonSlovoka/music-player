@@ -1,19 +1,30 @@
+@use 'src/animation/animation'
+
 @use 'src/layout/containers'
 @use 'src/layout/grid'
 @use 'src/layout/columns'
+
 @use 'src/components/navbar'
+@use 'src/components/buttons'
+@use 'src/components/modal'
+
 @use 'src/helpers/position'
 @use 'src/utilities/spacing'
-@use 'src/content'
+
 @use 'src/id'
 @use 'src/audio'
+
+@include animation.styles
 
 @include containers.styles
 @include grid.styles
 @include columns.styles
+
 @include navbar.styles
+@include buttons.styles
+@include modal.styles
+
 @include position.styles
 @include spacing.styles
-@include content.styles
 @include id.styles
 @include audio.styles

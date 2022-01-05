@@ -1,5 +1,6 @@
 (() => {
   const MEDIA_PATH = "media/music/"
+  const CONFIG = {loop: true}
 
   function initNavbar() {
     window.onscroll = function () {
@@ -13,6 +14,34 @@
   }
 
   initNavbar.prevScrollPos = window.pageYOffset
+
+  function initConfigDialog(config) {
+    const dialogConfig = document.querySelector(`#dialog-config`)
+    const fieldsetAudio = dialogConfig.querySelector(`#fieldsetAudio`)
+    const fragAudio = document.createRange().createContextualFragment(
+      `<label title="是否要循環撥放">Loop<input id="checkboxLoop" type="checkbox" ${config.loop ? "checked" : ""}></label><br>`
+    )
+    const checkboxLoop = fragAudio.querySelector(`#checkboxLoop`)
+    fieldsetAudio.append(fragAudio)
+
+    document.querySelector(`#btn-config`).onclick = () => dialogConfig.showModal()
+    const form = dialogConfig.querySelector(`form`)
+
+    dialogConfig.querySelector(`button[class="btn-close"]`).onclick = () => dialogConfig.close()
+    form.onsubmit = (e) => {
+      e.preventDefault()
+      config.loop = checkboxLoop.checked
+      updateAllAudio()
+      dialogConfig.close()
+      return false
+    }
+  }
+
+  function updateAllAudio() {
+    document.querySelectorAll(`audio`).forEach(audio => {
+      audio.loop = CONFIG.loop
+    })
+  }
 
   function setSong(mainFrag, url, name, songID) {
     const match = url.match(/.*\.(.*)/)
@@ -28,7 +57,7 @@
 <span class="me-1">${songID}</span>
 <img class="audio-icon me-1" alt="play" src="static/img/play.svg">
 <img class="audio-icon me-1" alt="stop" src="static/img/stop.svg">
-<span>${name}</span><audio><source src="${url}" type="audio/${extName}"></audio>
+<span>${name}</span><audio ${CONFIG.loop ? "loop" : ""}><source src="${url}" type="audio/${extName}"></audio>
 </li>`
     )
     const imgRun = frag.querySelector(`img[alt="play"]`)
@@ -71,7 +100,7 @@
         }
           break
         case "Escape":
-          document.querySelectorAll(`#song-list ul li img[alt="stop"]`).forEach(imgStop=>{
+          document.querySelectorAll(`#song-list ul li img[alt="stop"]`).forEach(imgStop => {
             imgStop.click()
           })
           break
@@ -82,6 +111,7 @@
   window.onload = async () => {
 
     initNavbar()
+    initConfigDialog(CONFIG)
 
     const ulElem = document.querySelector(`#song-list ul`)
     const response = await fetch(MEDIA_PATH)

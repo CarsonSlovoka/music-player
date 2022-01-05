@@ -1,0 +1,18 @@
+@mixin styles
+
+  // animation: 簡稱AT
+  // -webkit-animation: at-fade-in 3.0s ease normal
+  @-webkit-keyframes at-fade-in
+    from
+      opacity: 0
+    to
+      opacity: 1
+
+  // Find your favorite style from here: https://cubic-bezier.com/
+  // -webkit-animation: at-top2center 1.2s cubic-bezier(.33,1.44,.83,.22)
+  @-webkit-keyframes at-top2center
+    from
+      transform: translateY(-200%)
+    to
+      transform: translateY(0%)
+
