@@ -1,6 +1,18 @@
 (() => {
   const MEDIA_PATH = "media/music/"
 
+  function initNavbar() {
+    window.onscroll = function () {
+      if (initNavbar.prevScrollPos > window.pageYOffset) {
+        document.querySelector(`nav`).style.top = "0"
+      } else {
+        document.querySelector(`nav`).style.top = "-5rem"
+      }
+      initNavbar.prevScrollPos = window.pageYOffset
+    }
+  }
+  initNavbar.prevScrollPos = window.pageYOffset
+
   function setSong(mainFrag, url, name) {
     const match = url.match(/.*\.(.*)/)
     if (match === null) { // 可能是資料夾
@@ -29,6 +41,9 @@
   }
 
   window.onload = async () => {
+
+    initNavbar()
+
     const ulElem = document.querySelector(`#song-list ul`)
     const response = await fetch(MEDIA_PATH)
     const dirHTML = await response.text()

@@ -26,3 +26,14 @@ $-unit: 100 / length($-levelList)
 
     .offset-#{$i}
       margin-left: $-unit * $i * 1%
+
+  $-spacer: 1rem
+  @each $i in 1, 2, 3, 4, 5, 6
+    .mt-#{$i}
+      margin-top: $-spacer * $i
+    .mb-#{$i}
+      margin-bottom: $-spacer * $i
+    .ms-#{$i}
+      margin-left: $-spacer * $i
+    .me-#{$i}
+      margin-right: $-spacer * $i
