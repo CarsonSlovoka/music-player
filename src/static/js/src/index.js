@@ -11,9 +11,10 @@
       initNavbar.prevScrollPos = window.pageYOffset
     }
   }
+
   initNavbar.prevScrollPos = window.pageYOffset
 
-  function setSong(mainFrag, url, name) {
+  function setSong(mainFrag, url, name, markMsg) {
     const match = url.match(/.*\.(.*)/)
     if (match === null) { // 可能是資料夾
       return
@@ -24,6 +25,7 @@
     }
     const frag = document.createRange().createContextualFragment(
       `<li>
+<span class="me-1">${markMsg}</span>
 <img class="audio-icon me-1" alt="play" src="static/img/play.svg">
 <img class="audio-icon me-1" alt="stop" src="static/img/stop.svg">
 <span>${name}</span><audio><source src="${url}" type="audio/${extName}"></audio>
@@ -59,10 +61,10 @@
     const dirHTML = await response.text()
     const fragDir = document.createRange().createContextualFragment(dirHTML)
     const fragUL = document.createDocumentFragment()
-    fragDir.querySelectorAll(`a`).forEach(a => {
+    fragDir.querySelectorAll(`a`).forEach((a, idx) => {
       const sourceURL = new URL(a.href)
       // a.href = MEDIA_PATH + sourceURL.pathname
-      setSong(fragUL, MEDIA_PATH + sourceURL.pathname, a.innerText)
+      setSong(fragUL, MEDIA_PATH + sourceURL.pathname, a.innerText, idx)
     })
     ulElem.append(fragUL)
   }
