@@ -25,10 +25,12 @@
     const frag = document.createRange().createContextualFragment(
       `<li>
 <img class="audio-icon me-1" alt="play" src="static/img/play.svg">
+<img class="audio-icon me-1" alt="stop" src="static/img/stop.svg">
 <span>${name}</span><audio><source src="${url}" type="audio/${extName}"></audio>
 </li>`
     )
     const imgRun = frag.querySelector(`img[alt="play"]`)
+    const imgStop = frag.querySelector(`img[alt="stop"]`)
     const audio = frag.querySelector(`audio`)
     imgRun.onclick = () => {
       // document.que All audio.stop()
@@ -39,6 +41,11 @@
         audio.pause()
         imgRun.src = "static/img/play.svg"
       }
+    }
+    imgStop.onclick = () => {
+      audio.pause()
+      imgRun.src = "static/img/play.svg"
+      audio.currentTime = 0
     }
     mainFrag.appendChild(frag)
   }
