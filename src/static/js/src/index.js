@@ -52,7 +52,7 @@
     const numInterval = (endTime - startTime) / interval
     const unitVolume = (maxVolume - minVolume) / numInterval // 每間隔的音量差
     const curInterval = numInterval * ((curTime - startTime) / (endTime - startTime))
-    return +(curInterval * unitVolume).toFixed(2) // prevent: t': The provided double value is non-finite.
+    return +(curInterval * unitVolume).toFixed(2) // prevent: The provided double value is non-finite.
   }
 
   function setSong(mainFrag, url, name, songID) {
