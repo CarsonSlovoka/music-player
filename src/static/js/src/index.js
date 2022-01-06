@@ -1,37 +1,6 @@
-(() => {
+(async () => {
   const MEDIA_PATH = "media/music/"
-  const CONFIG = {
-    loop: true,
-    controls: true, // playback, volume, seeking,...
-    songList: [
-      {
-        name: "Mission Impossible theme song.mp3",
-        volume: {
-          default: 0.5, // 0~1
-          changeAble: true,
-          fadeInList: [
-            {
-              time: [2000, 10000], // start, end
-              volume: {from: 0.3, to: 0.8},
-              interval: 100
-            },
-          ],
-          fadeOutList: [
-            {
-              time: [15000, 20000],
-              volume: {from: 1, to: 0.05},
-              interval: 100
-            },
-            {
-              time: [25000, 26000],
-              volume: {from: 1, to: 1},
-              interval: 100
-            },
-          ],
-        }
-      }
-    ]
-  }
+  const CONFIG = {}
 
   function initNavbar() {
     window.onscroll = function () {
@@ -207,9 +176,13 @@
   }
 
   window.onload = async () => {
+    Object.assign(CONFIG, JSON.parse(JSON.stringify(
+      await fetch(`manifest.music-player.json`).then(response => response.json())
+    )))
 
     initNavbar()
     initConfigDialog(CONFIG)
+
 
     const ulElem = document.querySelector(`#song-list ul`)
     const response = await fetch(MEDIA_PATH)

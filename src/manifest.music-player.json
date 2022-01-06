@@ -1,0 +1,27 @@
+{
+  "loop": true,
+  "controls": true,
+  "songList": [
+    {
+      "name": "Mission Impossible theme song.mp3",
+      "volume": {
+        "default": 0.5,
+        "changeAble": true,
+        "fadeInList": [
+          {
+            "time": [2000, 10000],
+            "volume": {"from": 0.3, "to": 0.8},
+            "interval": 100
+          }
+        ],
+        "fadeOutList": [
+          {
+            "time": [15000, 20000],
+            "volume": {"from": 1, "to": 0.05},
+            "interval": 100
+          }
+        ]
+      }
+    }
+  ]
+}
