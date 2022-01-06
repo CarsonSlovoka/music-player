@@ -105,6 +105,12 @@
   function initInputSongNumber() {
     const inputSongNumber = document.querySelector(`#inputSongNumber`)
 
+    const stopAllSong = () => {
+      document.querySelectorAll(`#song-list ul li img[alt="stop"]`).forEach(imgStop => {
+        imgStop.click()
+      })
+    }
+
     inputSongNumber.onkeyup = (keyboardEvent) => {
       switch (keyboardEvent.key) {
         case "Enter": {
@@ -120,13 +126,13 @@
           imgRun.click() // 再開始，就能確保跟重頭開始撥放是一樣的
         }
           break
-        case "Escape":
-          document.querySelectorAll(`#song-list ul li img[alt="stop"]`).forEach(imgStop => {
-            imgStop.click()
-          })
-          break
       }
     }
+    document.addEventListener("keyup", (keyboardEvent)=>{
+      if (keyboardEvent.key === "Escape") {
+        stopAllSong()
+      }
+    })
   }
 
   window.onload = async () => {
