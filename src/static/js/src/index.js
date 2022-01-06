@@ -64,6 +64,16 @@
     const imgRun = frag.querySelector(`img[alt="play"]`)
     const imgStop = frag.querySelector(`img[alt="stop"]`)
     const audio = frag.querySelector(`audio`)
+
+    audio.stop = () => { // 自定義stop函數(原本沒有這個函數)
+      audio.pause()
+      imgRun.src = "static/img/play.svg"
+      liElem.classList.remove("active")
+      audio.currentTime = 0
+    }
+
+    audio.onended = () => audio.stop()
+
     imgRun.onclick = () => {
       // document.que All audio.stop()
       if (audio.paused) {
@@ -76,10 +86,7 @@
       }
     }
     imgStop.onclick = () => {
-      audio.pause()
-      imgRun.src = "static/img/play.svg"
-      liElem.classList.remove("active")
-      audio.currentTime = 0
+      audio.stop()
     }
     mainFrag.appendChild(frag)
   }
