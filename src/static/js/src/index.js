@@ -1,6 +1,9 @@
 (() => {
   const MEDIA_PATH = "media/music/"
-  const CONFIG = {loop: true}
+  const CONFIG = {
+    loop: true,
+    controls: true // playback, volume, seeking,...
+  }
 
   function initNavbar() {
     window.onscroll = function () {
@@ -18,10 +21,13 @@
   function initConfigDialog(config) {
     const dialogConfig = document.querySelector(`#dialog-config`)
     const fieldsetAudio = dialogConfig.querySelector(`#fieldsetAudio`)
-    const fragAudio = document.createRange().createContextualFragment(
-      `<label title="是否要循環撥放">Loop<input id="checkboxLoop" type="checkbox" ${config.loop ? "checked" : ""}></label><br>`
+    const fragAudio = document.createRange().createContextualFragment(`
+<label title="是否要循環撥放">Loop<input id="checkboxLoop" type="checkbox" ${config.loop ? "checked" : ""}></label><br>
+<label title="playback, volume, seeking">Controls<input id="checkboxControls" type="checkbox" ${config.controls ? "checked" : ""}></label><br>
+`
     )
     const checkboxLoop = fragAudio.querySelector(`#checkboxLoop`)
+    const checkboxControls = fragAudio.querySelector(`#checkboxControls`)
     fieldsetAudio.append(fragAudio)
 
     document.querySelector(`#btn-config`).onclick = () => dialogConfig.showModal()
@@ -31,6 +37,7 @@
     form.onsubmit = (e) => {
       e.preventDefault()
       config.loop = checkboxLoop.checked
+      config.controls = checkboxControls.checked
       updateAllAudio()
       dialogConfig.close()
       return false
@@ -40,6 +47,7 @@
   function updateAllAudio() {
     document.querySelectorAll(`audio`).forEach(audio => {
       audio.loop = CONFIG.loop
+      audio.controls = CONFIG.controls
     })
   }
 
@@ -58,7 +66,7 @@
 <img class="audio-icon me-1 col-2" alt="play" src="static/img/play.svg">
 <img class="audio-icon me-1 col-2" alt="stop" src="static/img/stop.svg">
 <span class="song-name col-3">${name}</span>
-<audio class="col-4" ${CONFIG.loop ? "loop" : ""} controls>
+<audio class="col-4" ${CONFIG.loop ? "loop" : ""} ${CONFIG.controls ? "controls" : ""}>
 <source src="${url}" type="audio/${extName}">
 </audio>
 </li>`
