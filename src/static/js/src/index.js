@@ -54,10 +54,13 @@
     }
     const frag = document.createRange().createContextualFragment(
       `<li id="song-${songID}">
-<span class="me-1">${songID}</span>
-<img class="audio-icon me-1" alt="play" src="static/img/play.svg">
-<img class="audio-icon me-1" alt="stop" src="static/img/stop.svg">
-<span>${name}</span><audio ${CONFIG.loop ? "loop" : ""}><source src="${url}" type="audio/${extName}"></audio>
+<span class="col-1">${songID}</span>
+<img class="audio-icon me-1 col-2" alt="play" src="static/img/play.svg">
+<img class="audio-icon me-1 col-2" alt="stop" src="static/img/stop.svg">
+<span class="song-name col-3">${name}</span>
+<audio class="col-4" ${CONFIG.loop ? "loop" : ""} controls>
+<source src="${url}" type="audio/${extName}">
+</audio>
 </li>`
     )
     const liElem = frag.querySelector(`li`)
