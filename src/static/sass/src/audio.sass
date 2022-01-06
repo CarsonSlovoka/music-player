@@ -3,13 +3,28 @@
     width: 2rem
     cursor: pointer
 
-  audio::-webkit-media-controls-panel
-    background-color: #c2e5df
+  audio
+    // https://gist.github.com/afabbro/3759334#audio
+    &::-webkit-media-controls-panel
+      background-color: #c2e5df
 
-  // Removes mute-button
-  audio::-webkit-media-controls-mute-button
-    display: none
+    // Removes mute-button
+    &::-webkit-media-controls-mute-button
+      display: none
 
-  // Removes play-button
-  audio::-webkit-media-controls-play-button
-    display: none
+    &.mute-btn::-webkit-media-controls-mute-button
+      display: initial
+
+    &::-webkit-media-controls-volume-slider-container
+      display: none
+
+    &::-webkit-media-controls-volume-slider // 看起來只要設定slider就可以了，滑動窗框不管是否設定container都還是在
+      display: none
+
+    &.volume-slider-container
+      &::-webkit-media-controls-volume-slider-container, &::-webkit-media-controls-volume-slider
+        display: initial
+
+    // Removes play-button
+    &::-webkit-media-controls-play-button
+      display: none

@@ -2,7 +2,35 @@
   const MEDIA_PATH = "media/music/"
   const CONFIG = {
     loop: true,
-    controls: true // playback, volume, seeking,...
+    controls: true, // playback, volume, seeking,...
+    songList: [
+      {
+        name: "Mission Impossible theme song.mp3",
+        volume: {
+          default: 0.5, // 0~1
+          changeAble: true,
+          fadeInList: [
+            {
+              time: [2000, 10000], // start, end
+              volume: {from: 0.3, to: 0.8},
+              interval: 100
+            },
+          ],
+          fadeOutList: [
+            {
+              time: [15000, 20000],
+              volume: {from: 1, to: 0.05},
+              interval: 100
+            },
+            {
+              time: [25000, 26000],
+              volume: {from: 1, to: 1},
+              interval: 100
+            },
+          ],
+        }
+      }
+    ]
   }
 
   function initNavbar() {
@@ -51,6 +79,13 @@
     })
   }
 
+  function voiceScale(curTime, startTime, endTime, minVolume, maxVolume, interval) {
+    const numInterval = (endTime - startTime) / interval
+    const unitVolume = (maxVolume - minVolume) / numInterval // 每間隔的音量差
+    const curInterval = numInterval * ((curTime - startTime) / (endTime - startTime))
+    return +(curInterval * unitVolume).toFixed(2) // prevent: t': The provided double value is non-finite.
+  }
+
   function setSong(mainFrag, url, name, songID) {
     const match = url.match(/.*\.(.*)/)
     if (match === null) { // 可能是資料夾
@@ -60,13 +95,23 @@
     if (!['mp3', 'mp4', 'm4a'].includes(extName.toLowerCase())) {
       return
     }
+
+    let songConfig = {}
+    const songConfigArray = CONFIG.songList.filter(song => song.name === name)
+
+    let volumeAble = true // allow changing the volume or not.
+    if (songConfigArray.length > 0) {
+      songConfig = songConfigArray[0]
+      volumeAble = songConfig.volume.changeAble
+    }
+
     const frag = document.createRange().createContextualFragment(
       `<li id="song-${songID}">
 <span class="col-1">${songID}</span>
 <img class="audio-icon me-1 col-2" alt="play" src="static/img/play.svg">
 <img class="audio-icon me-1 col-2" alt="stop" src="static/img/stop.svg">
 <span class="song-name col-3">${name}</span>
-<audio class="col-4" ${CONFIG.loop ? "loop" : ""} ${CONFIG.controls ? "controls" : ""}>
+<audio class="col-4${volumeAble ? " mute-btn volume-slider-container" : ""}" ${CONFIG.loop ? "loop" : ""} ${CONFIG.controls ? "controls" : ""}>
 <source src="${url}" type="audio/${extName}">
 </audio>
 </li>`
@@ -83,7 +128,33 @@
       audio.currentTime = 0
     }
 
+    // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio
     audio.onended = () => audio.stop()
+
+    if (songConfig.volume !== undefined) {
+      const volumeConfig = songConfig.volume
+      audio.volume = volumeConfig.default ?? 1
+      audio.ontimeupdate = (e) => {
+        const curMS = audio.currentTime * 1000 // milliseconds
+        for (const fadeItem of volumeConfig.fadeInList) {
+          const {time, volume, interval} = fadeItem
+          const [startTime, endTime] = time
+          if (curMS >= startTime && curMS <= endTime) {
+            audio.volume = volume.from + voiceScale(curMS, startTime, endTime, volume.from, volume.to, interval) // fadeIn
+            return
+          }
+        }
+
+        for (const fadeItem of volumeConfig.fadeOutList) {
+          const {time, volume, interval} = fadeItem
+          const [startTime, endTime] = time
+          if (curMS >= startTime && curMS <= endTime) {
+            audio.volume = volume.from - voiceScale(curMS, startTime, endTime, volume.to, volume.from, interval) // fadeIn
+            return
+          }
+        }
+      }
+    }
 
     imgRun.onclick = () => {
       // document.que All audio.stop()
@@ -128,7 +199,7 @@
           break
       }
     }
-    document.addEventListener("keyup", (keyboardEvent)=>{
+    document.addEventListener("keyup", (keyboardEvent) => {
       if (keyboardEvent.key === "Escape") {
         stopAllSong()
       }
