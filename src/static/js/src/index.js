@@ -60,6 +60,7 @@
 <span>${name}</span><audio ${CONFIG.loop ? "loop" : ""}><source src="${url}" type="audio/${extName}"></audio>
 </li>`
     )
+    const liElem = frag.querySelector(`li`)
     const imgRun = frag.querySelector(`img[alt="play"]`)
     const imgStop = frag.querySelector(`img[alt="stop"]`)
     const audio = frag.querySelector(`audio`)
@@ -67,6 +68,7 @@
       // document.que All audio.stop()
       if (audio.paused) {
         audio.play()
+        liElem.classList.add("active")
         imgRun.src = "static/img/pause.svg"
       } else {
         audio.pause()
@@ -76,6 +78,7 @@
     imgStop.onclick = () => {
       audio.pause()
       imgRun.src = "static/img/play.svg"
+      liElem.classList.remove("active")
       audio.currentTime = 0
     }
     mainFrag.appendChild(frag)
