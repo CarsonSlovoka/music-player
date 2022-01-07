@@ -20,6 +20,11 @@
 
 1. 準備一個server:
    您可以自己寫，或者下載我寫的 [go-http-server.exe](https://github.com/CarsonSlovoka/music-player/releases/tag/v0.0) (這類似python http.server)
+   > `go-http-server -wDir="C:\..."  -port=1234`
+   >
+   > - wDir指的是工作路徑，不給就用exe的資料夾當工作路徑
+   > - port不給預設用8000
+
 2. 在工作路徑 [src](src/) 之下啟動server
 3. 把您有興趣的音樂全部放到[media]之中。(❗尚不支持子目錄)
 
